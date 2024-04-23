@@ -1,0 +1,6 @@
+{
+    "host": "127.0.0.1", 
+    "port": 4000,
+    "server_name":"slave1",
+    "dbConnConfig":{"user":"postgres", "pass":"teodiomysql", "host":"127.0.0.1", "port":"5432", "dbname":"db_video"}
+}
