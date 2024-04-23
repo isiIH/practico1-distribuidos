@@ -1,46 +1,45 @@
-from flask import Flask, request, jsonify,json
+from flask import Flask, request, jsonify, json
+import requests
 
 app = Flask(__name__)
-app.run(debug=True)
+
+SLAVES_IP = "127.0.0.1"
+SLAVES_PORT = 4000
+
+SLAVES_DISTR = {
+    'tesis': f"{SLAVES_IP}:{SLAVES_PORT}",
+    'libro': f"{SLAVES_IP}:{SLAVES_PORT + 1}",
+    'video': f"{SLAVES_IP}:{SLAVES_PORT + 2}",
+    'presentacion': f"{SLAVES_IP}:{SLAVES_PORT + 3}"
+}
 
 @app.route('/')
 def hello():
-    return 'Hello, World!'
+    return 'Server running'
 
 
-@app.route('/products', methods=['GET']) 
-def getProducts():
+@app.route('/query', methods=['GET']) 
+def process_request():
+    result = []
 
-    pname = request.args.get('pname')
-    price = request.args.get('price')
+    titles = request.args.get('titulo')
+    doc_types = request.args.get('tipo_doc') 
 
-    if pname == None and price == None:
-        return "list all products" 
+    # request a esclavos via tipo de documento
+    if doc_types is not None:
+        for doc_type in doc_types.split():
+            result += requests.get("http://" + SLAVES_DISTR[doc_type] + "/all").json()
+        return result
+        
+
+    # request a esclavos via titulo
+    if titles is not None:
+        for slave_distr in SLAVES_DISTR.values():
+            result += requests.get("http://" + slave_distr + "/title?titles=" + titles.replace(' ', '+')).json()
+        return result
     
-    return "list products by args => pname={} - price={}".format(pname,price)
+    
+    return "bad request"
 
 
-@app.route('/products/<id>', methods=['GET']) 
-def getProductById(id):
-    return "id="+id
-
-@app.route('/products', methods=['POST']) 
-def createProduct():
-    data = request.json
-    print(data)
-    #respuesta tipo json jsonify(data)
-    return "json enviado => "+ json.dumps(data)
-
-@app.route('/products/<id>', methods=['PUT']) 
-def updateProductById(id):
-    data = request.json
-    #respuesta tipo json jsonify(data)
-    return "id => "+id+" - json enviado => "+ json.dumps(data)
-
-@app.route('/products', methods=['DELETE']) 
-def deleteProducts():
-    return "deleteProducts (no borrar realmente - solo marcar el estado 'eliminado')"
-
-@app.route('/products/<id>', methods=['DELETE']) 
-def deleteProductById(id):
-    return " id = "+id+" (no borrar realmente - solo marcar el estado 'eliminado')"
+app.run(debug=True, port=5000)
