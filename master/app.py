@@ -35,7 +35,11 @@ def process_request():
     # request a esclavos via titulo
     if titles is not None:
         for slave_distr in SLAVES_DISTR.values():
-            result += requests.get("http://" + slave_distr + "/documents?title=" + titles.replace(' ', '+')).json()
+            try:
+                requests.get("http://" + slave_distr + "/documents?title=" + titles.replace(' ', '+')).json()
+                result += requests.get("http://" + slave_distr + "/documents?title=" + titles.replace(' ', '+')).json()
+            except:
+                print(f"Request failed - {slave_distr}")
         return result
     
     

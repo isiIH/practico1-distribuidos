@@ -5,7 +5,7 @@ import model
 
 @app.route('/', methods=['GET']) 
 def main():
-    return "Kris mankito"
+    return f"Server {sysConfig['server_name']} running"
 
 @app.route('/documents', methods=['GET']) 
 def getDocuments():
