@@ -28,14 +28,14 @@ def process_request():
     # request a esclavos via tipo de documento
     if doc_types is not None:
         for doc_type in doc_types.split():
-            result += requests.get("http://" + SLAVES_DISTR[doc_type] + "/all").json()
+            result += requests.get("http://" + SLAVES_DISTR[doc_type] + "/documents").json()
         return result
         
 
     # request a esclavos via titulo
     if titles is not None:
         for slave_distr in SLAVES_DISTR.values():
-            result += requests.get("http://" + slave_distr + "/title?titles=" + titles.replace(' ', '+')).json()
+            result += requests.get("http://" + slave_distr + "/documents?title=" + titles.replace(' ', '+')).json()
         return result
     
     
