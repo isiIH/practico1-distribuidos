@@ -2,6 +2,6 @@
     "host": "127.0.0.1", 
     "port": 4003,
     "server_name":"slave4",
-    "subscriber_name":"",
-    "dbConnConfig":{"user":"postgres", "pass":"teodiomysql", "host":"127.0.0.1", "port":"5432", "dbname":"db4"}
+    "db_name": "db4",
+    "dbConnConfig":{"user":"postgres", "pass":"teodiomysql", "host":"127.0.0.1", "port":"5432", "dbname":"doc_db"}
 }

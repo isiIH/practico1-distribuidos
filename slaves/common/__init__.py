@@ -31,3 +31,4 @@ def read_config():
 app = Flask(__name__)
 sysConfig = read_config()
 model.create_db(sysConfig["dbConnConfig"])
+model.insertData(sysConfig["dbConnConfig"])

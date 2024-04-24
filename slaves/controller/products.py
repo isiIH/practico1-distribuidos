@@ -3,14 +3,14 @@ from common import app, sysConfig
 from controller import *
 import model 
 
-@app.route('/all', methods=['GET']) 
+@app.route('/', methods=['GET']) 
+def main():
+    return "Kris mankito"
+
+@app.route('/documents', methods=['GET']) 
 def getDocuments():
-    return model.select_all(sysConfig["dbConnConfig"])
-
-
-@app.route('/title', methods=['GET']) 
-def getDocumentByTitle():
+    title = request.args.get('title')
+    if title == None:
+        return model.select_all(sysConfig["dbConnConfig"], sysConfig['db_name'])
     
-    type_name = request.args.get('title')
-    
-    return  model.select_byFilter(sysConfig["dbConnConfig"],type_name)
+    return  model.select_byFilter(sysConfig["dbConnConfig"],sysConfig['db_name'], title)

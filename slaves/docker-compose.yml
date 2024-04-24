@@ -1,23 +1,17 @@
+version: '3.8'
 services:
-  web:
-    build: .
-    command: python3 main.py config/config0.json
-    ports:
-      - "127.0.0.1:4000:4000"
-    expose:
-      - "4000"
-    volumes:
-      - .:/app
-    links:
-      - db
-
-  db:
-    image: postgres:14-alpine
-    ports:
-      - 127.0.0.1:5432:5432
-    expose:
-      - "5432"
+  postgres_db:
+    image: postgres:latest
+    container_name: doc_db 
+    restart: always
     environment:
-      - POSTGRES_PASSWORD=teodiomysql
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=db_video
+      - POSTGRES_PASSWORD=teodiomysql
+      - POSTGRES_DB=doc_db
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+volumes:
+  postgres_db:
+    driver: local
