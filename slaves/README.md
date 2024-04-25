@@ -25,9 +25,19 @@ Contienen información sobre los nodos esclavos y la configuración con la base 
   - port: El puerto en el que la base de datos está escuchando.
   - dbname: El nombre de la base de datos.
 
+### Variables de entorno
+
+Contienen información de la base de datos
+
+ - POSTGRES_USER: Nombre del usuario
+- POSTGRES_PASSWORD: Contraseña del usuario
+- POSTGRES_DB: Nombre de la base de datos
+- POSTGRES_PORT: Puerto en el que la base de datos está escuchando
+- POSTGRES_HOST: Dirección IP del host
+
 ### Forma de despliegue
 
-1. Ejecuta el comando: 
+1. Dentro de la carpeta /slaves, ejecuta el siguiente comando para levantar la base de datos: 
 ```docker-compose up -d```
 2. Ejecuta los nodos esclavos dentro de la carpeta /slaves en cada terminal:
 ```python

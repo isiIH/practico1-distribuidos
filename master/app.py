@@ -28,7 +28,10 @@ def process_request():
     # request a esclavos via tipo de documento
     if doc_types is not None:
         for doc_type in doc_types.split():
-            result += requests.get("http://" + SLAVES_DISTR[doc_type] + "/documents").json()
+            try:
+                result += requests.get("http://" + SLAVES_DISTR[doc_type] + "/documents").json()
+            except:
+                print(f"Request failed - {SLAVES_DISTR[doc_type]}")
         return result
         
 

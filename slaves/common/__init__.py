@@ -1,6 +1,5 @@
 from flask import Flask, json
 import time,sys
-import model
 
 ###############################################################################
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -30,5 +29,3 @@ def read_config():
 #CONSTANTE DEL SISTEMA
 app = Flask(__name__)
 sysConfig = read_config()
-model.create_db(sysConfig["dbConnConfig"])
-model.insertData(sysConfig["dbConnConfig"])

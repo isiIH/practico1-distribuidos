@@ -11,6 +11,6 @@ def main():
 def getDocuments():
     title = request.args.get('title')
     if title == None:
-        return model.select_all(sysConfig["dbConnConfig"], sysConfig['db_name'])
+        return model.select_all(sysConfig["dbConnConfig"])
     
-    return  model.select_byFilter(sysConfig["dbConnConfig"],sysConfig['db_name'], title)
+    return  model.select_byFilter(sysConfig["dbConnConfig"], title)
