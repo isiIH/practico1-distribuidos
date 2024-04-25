@@ -1,21 +1,28 @@
-{% extends "layout.html" %}
-{% block title %} WhoDaMan - A trivia game {% endblock %}
-{% block head %}
-    {{ super() }}
-{% endblock %}
 {% block content %}
     <div>
       <header>
-        <h1>WhoDaMan</h1>
+        <h1>Race Game</h1>
       </header>
       <main >
-        <form id="start">
-          <input id="room" type="text" placeholder="Game Name" />
-        </form>
-        <p>
-          Answer trivia questions with friends!
-        </p>
+        <input id="username" type="text" placeholder="Username" />
+        <input id="teamname" type="text" placeholder="Team name" />
+        <button id="join">Create or join a team</button>
       </main>
+      <h3>Teams and players in game</h3>
+      <ul id="players">
+        {% for key,values in teams.items() %}
+          <li> {{key}} </li>
+          <ul>
+            {% for value in values %}
+              <li> {{ players[value] }} </li>  
+            {% endfor %}   
+          </ul>    
+        {% endfor %}
+      </ul>
     </div>
-    <footer><a href="/admin">Create a game</a></footer>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}

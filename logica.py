@@ -1,13 +1,16 @@
 import random
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 class Game:
     def __init__(self):
         # variables globales
-        self.limit_players_per_room = 6
-        self.limit_teams = 3
-        self.max_score = 20
-        self.min_value_dice = 1
-        self.max_value_dice = 6
+        self.limit_players_per_room = os.getenv("NPLAYERS")
+        self.limit_teams = os.getenv("NTEAMS")
+        self.max_score = os.getenv("NROWS")
+        self.min_value_dice = os.getenv("MIN")
+        self.max_value_dice = os.getenv("MAX")
 
         # variables generales
         self.locked = False
@@ -99,6 +102,8 @@ class Game:
         self.teams[team_name].append(client_id)
 
         print(f'{username} se ha unido al equipo {team_name}!')
+        if len(self.teams.keys()) >= 2:
+            self.start_game()
 
     
     def create_team(self, team_name):
@@ -140,39 +145,3 @@ class Game:
 
 
 game = Game()
-
-game.join_player(1, 'manquisi', 'mancos')
-game.join_player(2, 'mankris', 'pros')
-game.start_game()
-game.roll_dice(1)
-game.roll_dice(2)
-game.roll_dice(2)
-game.roll_dice(1)
-game.roll_dice(2)
-game.roll_dice(2)
-game.roll_dice(1)
-game.roll_dice(2)
-game.roll_dice(2)
-game.roll_dice(1)
-game.roll_dice(2)
-game.roll_dice(2)
-game.join_player(3, 'rata', 'gatos')
-game.join_player(4, 'gata_xl', 'gatos')
-game.roll_dice(1)
-game.roll_dice(2)
-game.roll_dice(1)
-game.roll_dice(2)
-game.roll_dice(3)
-game.roll_dice(4)
-game.roll_dice(3)
-game.roll_dice(4)
-game.leave_player(2)
-game.roll_dice(1)
-game.roll_dice(3)
-game.roll_dice(4)
-game.roll_dice(1)
-game.roll_dice(3)
-game.roll_dice(4)
-game.roll_dice(1)
-game.roll_dice(3)
-game.roll_dice(4)

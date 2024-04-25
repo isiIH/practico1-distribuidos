@@ -1,28 +1,26 @@
 from flask import Flask, render_template, request, url_for
 from flask_socketio import SocketIO, emit, join_room
 import os
+import logica
 
+game = logica.Game()
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 socketio = SocketIO(app)
 socketio.init_app(app, cors_allowed_origins="*")
-import random
 
 # dictionary pairing room name to admin socket id
 rooms = {}
+teams = {}
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', teams=game.get_teams(), players=game.usernames)
 
-@app.route('/admin')
-def admin():
-    return render_template('admin.html')
-
-@app.route('/<room>')
-def play(room):
-    return render_template('play.html')
+@app.route('/play')
+def play():
+    return render_template('play.html', players=teams)
 
 def is_admin(id, room):
     return rooms[room] == id
@@ -44,10 +42,12 @@ def on_admin_disconnect():
 @socketio.on('join')
 def on_join(data):
     name = data['name']
-    room = data['room']
-    join_room(room)
-    emit('join', data, room=room)
-    print(f'{name} joined {room}')
+    team = data['team']
+    game.join_player(request.sid, name, team)
+    join_room(team)
+    emit('reload', broadcast=True)
+    if len(game.teams.keys()) >= 2:
+        emit("play", broadcast=True)
 
 @socketio.on('buzz')
 def on_buzz(data):

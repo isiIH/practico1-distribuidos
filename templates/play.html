@@ -1,26 +1,28 @@
-{% extends "layout.html" %}
-{% block title %} WhoDaMan - Play {% endblock %}
-{% block head %}
-    {{ super() }}
-{% endblock %}
 {% block content %}
     <div>
       <main>
-        <form id="start">
-          <header>
-            <h1>
-              WhoDaMan
-            </h1>
-          </header>
-          <input id="name" type="text" maxlength="100" placeholder="Your name">
-          <p>P.S. Your name will be shared with the moderator</p>
-        </form>
+        <h1>
+          Race Game
+        </h1>
         <div id="panel">
           <div class="panel__label">Score &mdash; <span id="score">0</span></div>
-          <button id="buzz" type="submit" style="display: none;">⚡️</button>
-          <div id="state">Waiting...</div>
+          <button id="dice">Lanzar dado</button>
         </div>
-        <ul id="buzzes"></ul>
+        <ul id="players">
+          {% for key,values in players.items() %}
+            <li> {{key}} </li>
+            <ul>
+              {% for value in values %}
+                <li> {{ value }} </li>  
+              {% endfor %}   
+            </ul>    
+          {% endfor %}
+        </ul>
       </main>
     </div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
