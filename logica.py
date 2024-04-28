@@ -57,11 +57,17 @@ class Game:
 
         print(f'{self.usernames[client_id]} ha lanzado el dado!')
 
-        if len(self.roll_set) == len(self.teams[self.game_rotations[self.team_turn]]):
+        if self.check_if_pass_turn():
             self.pass_turn()
             return num, True
 
         return num, False
+    
+
+    def check_if_pass_turn(self):
+        if len(self.roll_set) >= len(self.teams[self.game_rotations[self.team_turn]]):
+            return True
+        return False
 
 
     def pass_turn(self):
@@ -141,14 +147,26 @@ class Game:
                 #equipo vacio
                 if len(self.teams[team_name]) == 0:
                     self.remove_team(team_name)
+
+                # revisa si se debe pasar turno
+                if team_name == self.game_rotations[self.team_turn]:
+                    self.roll_set.remove(client_id)
+                    if self.check_if_pass_turn():
+                        self.pass_turn()
+
                 return True
 
+
     def remove_team(self, team_name):
+        if self.game_rotations[self.team_turn] == team_name:
+            self.team_turn = self.team_turn % (len(self.teams) - 1)     # siguiente turno
+
         self.teams.pop(team_name)
         self.game_rotations.remove(team_name)
         self.scores.pop(team_name)
 
         print(f'El equipo {team_name} fue destruido')
+
 
     def end_game(self):
         self.teams.clear()
