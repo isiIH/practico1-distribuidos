@@ -6,8 +6,8 @@ load_dotenv()
 class Game:
     def __init__(self):
         # variables globales
-        self.limit_players_per_room = os.getenv("NPLAYERS")
-        self.limit_teams = os.getenv("NTEAMS")
+        self.limit_players_per_room = int(os.getenv("NPLAYERS"))
+        self.limit_teams = int(os.getenv("NTEAMS"))
         self.max_score = os.getenv("NROWS")
         self.min_value_dice = os.getenv("MIN")
         self.max_value_dice = os.getenv("MAX")
@@ -90,13 +90,20 @@ class Game:
 
 
     def join_player(self, client_id, username, team_name):
+        if len(self.get_teams().keys()) >= self.limit_teams:
+            print(f"No se pueden ingresar más equipos! Límite {self.limit_teams}")
+            return False
+
         if not self.team_exists(team_name):
             # equipo no existe, se crea
             self.create_team(team_name)
         
         elif not self.team_has_space(team_name):
             # equipo sin espacio, fallo
+            print(f"No se pueden ingresar más jugadores! Límite {self.limit_players_per_room}")
             return False
+        
+        
         
         self.usernames[client_id] = username
         self.teams[team_name].append(client_id)
@@ -104,6 +111,8 @@ class Game:
         print(f'{username} se ha unido al equipo {team_name}!')
         if len(self.teams.keys()) >= 2:
             self.start_game()
+
+        return True
 
     
     def create_team(self, team_name):

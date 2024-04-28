@@ -6,11 +6,14 @@
         </h1>
         <div id="panel">
           <div class="panel__label">Score &mdash; <span id="score">0</span></div>
-          <button id="dice">Lanzar dado</button>
+          <div>
+            <button id="dice">Roll dice</button>
+            <span id="diceResult"></span>
+          </div>
         </div>
         <ul id="players">
-          {% for key,values in players.items() %}
-            <li> {{key}} </li>
+          {% for key,values in teams.items() %}
+            <li> {{key}} (Score: {{ scores[key] }}) </li>
             <ul>
               {% for value in values %}
                 <li> {{ value }} </li>  
@@ -24,5 +27,5 @@
 {% block scripts %}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="{{ url_for('static', filename='index.js') }}"></script>
+<script src="{{ url_for('static', filename='play.js') }}"></script>
 {% endblock %}

@@ -4,11 +4,13 @@
         <h1>Race Game</h1>
       </header>
       <main >
-        <input id="username" type="text" placeholder="Username" />
-        <input id="teamname" type="text" placeholder="Team name" />
-        <button id="join">Create or join a team</button>
+        <form id="form">
+          <input id="username" type="text" placeholder="Username" />
+          <input id="teamname" type="text" placeholder="Team name" />
+          <button id="join">Create or join a team</button>
+        </form>
       </main>
-      <h3>Teams and players in game</h3>
+      <h3>Teams and players list</h3>
       <ul id="players">
         {% for key,values in teams.items() %}
           <li> {{key}} </li>
