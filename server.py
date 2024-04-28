@@ -9,7 +9,6 @@ SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 socketio = SocketIO(app)
 socketio.init_app(app, cors_allowed_origins="*")
-app.template_folder = 'templates'
 
 @app.route('/')
 def index():
