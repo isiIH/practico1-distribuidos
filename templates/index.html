@@ -3,28 +3,46 @@
       <header>
         <h1>Race Game</h1>
       </header>
-      <main >
-        <form id="form">
-          <input id="username" type="text" placeholder="Username" />
-          <input id="teamname" type="text" placeholder="Team name" />
-          <button id="join">Create or join a team</button>
-        </form>
+      <div id="confirmation-dialog" style="display: none;">
+        <p id="confirmation-message"></p>
+        <button id="confirm-accept">Accept</button>
+        <button id="confirm-reject">Reject</button>
+    </div>
+      <main id="page">
+        <div id="join-html">
+          <main >
+            <form id="form">
+              <input id="username" type="text" placeholder="Username" />
+              <input id="teamname" type="text" placeholder="Team name" />
+              <button id="join">Create or join a team</button>
+            </form>
+            <p id="state"></p>
+          </main>
+          <h3>Teams and players list</h3>
+          <ul class="players">
+          </ul>
+        </div>
+
+        <div id="play-html" style="display:none;">
+          <div id="panel">
+            <div>
+              <span id="team">Team: </span>
+              <span id="turn">Turn: </span>
+            </div>
+            <div class="panel__label">Score &mdash; <span id="score">0</span></div>
+            <div>
+              <button id="dice">Roll dice</button>
+              <span id="diceResult"></span>
+            </div>
+          </div>
+          <ul class="players">
+          </ul>
+      </div>
       </main>
-      <h3>Teams and players list</h3>
-      <ul id="players">
-        {% for key,values in teams.items() %}
-          <li> {{key}} </li>
-          <ul>
-            {% for value in values %}
-              <li> {{ players[value] }} </li>  
-            {% endfor %}   
-          </ul>    
-        {% endfor %}
-      </ul>
     </div>
 {% endblock %}
 {% block scripts %}
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="{{ url_for('static', filename='index.js') }}"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
