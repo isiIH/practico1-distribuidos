@@ -1,7 +1,0 @@
-{
-    "host": "127.0.0.1", 
-    "port": 4001,
-    "server_name":"slave1",
-    "subscriber_name":"",
-    "dbConnConfig":{"user":"postgres", "pass":"Mu202t#U!Q4R", "host":"127.0.0.1", "port":"5432", "dbname":"ds_testdb"}
-}
