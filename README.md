@@ -6,9 +6,9 @@
 
 ### Frameworks utilizados
 
-- flask: Para la creación de la API
-- requests: Para la generación de consultas a los nodos esclavos
-- psycopg2: Para la comunicación con la base de datos postgres
+- flask (v3.0.3): Para la creación de la API
+- requests (v2.31.0): Para la generación de consultas a los nodos esclavos
+- psycopg2 (v2.9.9): Para la comunicación con la base de datos postgres
 
 ### Archivos de configuración
 
