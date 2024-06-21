@@ -69,7 +69,7 @@ def on_roll():
     emit('diceresult', result)
     if passTurn:
         emit('updatelist', {'teams':game.get_teams(), 'players':game.usernames, 'scores': game.get_scores(), 'turn': game.game_rotations[game.team_turn]}, broadcast=True)
-
+ 
     if game.locked:
         msg = f"Team {game.game_rotations[game.team_turn]} has won! Game over."
         emit('game_over', {'message': msg}, broadcast=True)
