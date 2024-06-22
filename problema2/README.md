@@ -18,7 +18,7 @@
     - socket.io (v3.0.5): Para la comunicación desde el cliente al servidor
     - jquery (v2.2.4): Para facilitar la interacción con los componentes HTML
 
-### Variables de entorno
+### Variables de entorno - Juego
 
 Contienen información de la lógica del juego
 
@@ -27,6 +27,10 @@ Contienen información de la lógica del juego
 - NPLAYERS: Número de jugadores máximo por equipo.
 - MIN: Mínimo valor para el dado de cada jugador.
 - MAX: Máximo valor para el dado de cada jugador.
+
+### Variables de entorno - Stadistics
+
+- TIME_GAP: Intervalo de tiempo para los gráficos.
 
 ### Forma de despliegue
 

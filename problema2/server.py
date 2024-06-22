@@ -11,6 +11,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 socketio = SocketIO(app)
 socketio.init_app(app, cors_allowed_origins="*")
 
+# Identifica qué archivo de texto modificar
 def configure_logger(client_id):
     logger = logging.getLogger(client_id)
     if not logger.hasHandlers():
@@ -30,6 +31,7 @@ def handle_connect():
     emit('load_join')
     emit('updatelist', {'teams':game.get_teams(), 'players':game.usernames, 'scores': game.get_scores()})
 
+    # Inicio del juego
     logger = configure_logger(request.sid)
     logger.info(f"ini, juego{game.num_juego}, inicio-juego")
 
@@ -40,6 +42,7 @@ def on_disconnect():
         emit('updatelist', {'teams':game.get_teams(), 'players':game.usernames, 'scores': game.get_scores(), 'turn': game.game_rotations[game.team_turn]}, broadcast=True)
         if game.gamemode and len(game.get_teams().keys()) < 2:
 
+            # fin del juego, elimina a todos los jugadores
             for team_name, team_list in game.teams.items():
                 for cid in team_list:
                     logger = configure_logger(cid)
@@ -56,6 +59,7 @@ def on_join(data):
     data['sid'] = request.sid
     print(f"User {data['sid']} : {data['name']} want to join")
 
+    #Crear un jugador
     logger = configure_logger(request.sid)
     logger.info(f"ini, juego{game.num_juego}, crea-jugador, {team}, {name}")
 
@@ -64,6 +68,7 @@ def on_join(data):
             print(f"Ask to {game.teams[team][0]} : {game.usernames[game.teams[team][0]]}")
             emit('asktojoin', data, room=game.teams[team][0], callback=callJoin)
 
+            # Operación para aceptar a un jugador en el equipo
             logger = configure_logger(game.teams[team][0])
             logger.info(f"ini, juego{game.num_juego}, aceptar-jugador, {data['team']}, {data['name']}")
         else:
@@ -77,10 +82,14 @@ def on_join(data):
             data = {'teams':game.get_teams(), 'players':game.usernames, 'scores': game.get_scores(), 'turn': game.game_rotations[game.team_turn]}
             print(data)
             emit('updatelist', data, broadcast=True)
+
+            # Se ingresa exitósamente a un jugador en el equipo
             logger.info(f"fin, juego{game.num_juego}, crea-jugador, {team}, {name}, True")
 
     else:
         emit('limit')
+
+        # Se alcanzó el límite, no se ingresa al jugador
         logger.info(f"fin, juego{game.num_juego}, crea-jugador, {team}, {name}, False")
 
 def callJoin(status, data):
@@ -97,8 +106,10 @@ def callJoin(status, data):
         print(f"{data['sid']} rejected")
         emit('reject', {'msg': f"Team {data['team']} has rejected you"}, room=data['sid'])
 
+    # Se acepta o rechaza a un jugador en un equipo
     logger.info(f"fin, juego{game.num_juego}, aceptar-jugador, {data['team']}, {data['name']}, {status}")
 
+    #No se ingresa al nuevo jugador
     logger = configure_logger(request.sid)
     logger.info(f"fin, juego{game.num_juego}, crea-jugador, {data['team']}, {data['name']}, {status}")
 
@@ -110,6 +121,7 @@ def on_roll(data):
     result, passTurn = game.roll_dice(request.sid)
 
     if result > 0:
+        #Operación de lanzar lado con un resultado válido
         logger = configure_logger(request.sid)
         logger.info(f"ini, juego{game.num_juego}, lanza-dado, {team}, {name}, {result}")
     
@@ -120,6 +132,7 @@ def on_roll(data):
     if result > 0: logger.info(f"fin, juego{game.num_juego}, lanza-dado, {team}, {name}, {result}")
 
     if game.locked:
+        #Fin del juego, se ingresa el log en todos los jugadores
         for team_name, team_list in game.teams.items():
             for cid in team_list:
                 logger = configure_logger(cid)
