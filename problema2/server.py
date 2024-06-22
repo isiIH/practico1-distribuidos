@@ -14,7 +14,7 @@ socketio.init_app(app, cors_allowed_origins="*")
 def configure_logger(client_id):
     logger = logging.getLogger(client_id)
     if not logger.hasHandlers():
-        handler = logging.FileHandler(f'logs/{client_id}_log.txt')
+        handler = logging.FileHandler(f'rmi/logs/{client_id}_log.txt')
         formatter = logging.Formatter('%(asctime)s, %(message)s', datefmt='%H:%M:%S %d-%m-%Y')
         handler.setFormatter(formatter)
         logger.addHandler(handler)
@@ -44,6 +44,7 @@ def on_disconnect():
                 for cid in team_list:
                     logger = configure_logger(cid)
                     logger.info(f"fin, juego{game.num_juego}, fin-juego")
+                    os.popen(f"java -cp rmi/client Client rmi/logs/{cid}_log.txt").read()
 
             game.end_game()
             emit('game_over', {'message': "A team has disconnected! Game over."}, broadcast=True)
@@ -123,6 +124,7 @@ def on_roll(data):
             for cid in team_list:
                 logger = configure_logger(cid)
                 logger.info(f"fin, juego{game.num_juego}, fin-juego")
+                os.popen(f"java -cp rmi/client Client rmi/logs/{cid}_log.txt").read()
 
         msg = f"Team {game.game_rotations[game.team_turn]} has won! Game over."
         game.end_game()
