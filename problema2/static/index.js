@@ -115,7 +115,7 @@ $diceButton = $('#dice')
 $diceResult = $('#diceResult')
 
 $diceButton.on('click', function() {
-    socket.emit('rolldice')
+    socket.emit('rolldice', data)
 })
 
 socket.on('diceresult', function(result) {

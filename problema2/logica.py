@@ -6,6 +6,7 @@ load_dotenv()
 class Game:
     def __init__(self):
         # variables globales
+        self.num_juego = 1
         self.limit_players_per_room = int(os.getenv("NPLAYERS"))
         self.limit_teams = int(os.getenv("NTEAMS"))
         self.max_score = int(os.getenv("NROWS"))
@@ -34,7 +35,8 @@ class Game:
         # asigna turnos
         self.game_rotations = list(self.teams.keys()).copy()
         random.shuffle(self.game_rotations)
-
+        
+        print(f'Team turn: {self.team_turn}')
         print(f'Comienza el equipo {self.game_rotations[self.team_turn]} :o')
 
     
@@ -56,6 +58,7 @@ class Game:
         self.team_turn_score += num
 
         print(f'{self.usernames[client_id]} ha lanzado el dado!')
+        print(f"Resultado: {num}")
 
         if self.check_if_pass_turn():
             self.pass_turn()
@@ -179,6 +182,8 @@ class Game:
         self.team_turn = 0
         self.team_turn_score = 0
         self.gamemode = 0
+
+        self.num_juego += 1
 
     
     def get_teams(self):
